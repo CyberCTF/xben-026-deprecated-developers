@@ -25,3 +25,10 @@ ARG FLAG=FLAG{a6ac61a12b93104de3b7a7db781ee95eff75310de4cf2deb1e90b57f0c824309}
 RUN echo -n $FLAG > /FLAG.txt
 
 CMD ["/usr/local/apache2/bin/httpd", "-D", "FOREGROUND"]
+
+# CyberCTF per-player flag: the flag above is only the development fallback. ctf-entrypoint.sh
+# puts the player's flag (CTF_FLAG_MAIN) in its place at every start, then runs the original
+# entrypoint and command, repeated here unchanged.
+COPY ctf-entrypoint.sh /usr/local/bin/ctf-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/ctf-entrypoint.sh"]
+CMD ["/usr/local/apache2/bin/httpd", "-D", "FOREGROUND"]

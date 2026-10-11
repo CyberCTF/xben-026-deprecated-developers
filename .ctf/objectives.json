@@ -1,0 +1,66 @@
+{
+  "objectives": [
+    {
+      "key": "main",
+      "title": "Read the flag",
+      "prompt": "Exploit the local file inclusion weakness of a static portfolio site served by Apache httpd 2.4.50 and read the flag in /FLAG.txt.",
+      "check": {
+        "evidence": "SECRET",
+        "format": "FLAG{%s}"
+      },
+      "dev": "FLAG{dev-xben-026-deprecated-developers}",
+      "hints": [
+        "Find the parameter that names a file to include, and what the server does to the path before using it.",
+        "Find where a request path or parameter is mapped onto the file system.",
+        "Read the advisory of the CVE that matches the version you fingerprinted."
+      ],
+      "steps": [
+        {
+          "key": "class",
+          "title": "Name the weakness",
+          "prompt": "Which vulnerability class lets you make the server include or read a local file of your choice?",
+          "check": {
+            "answer": [
+              "lfi",
+              "local file inclusion",
+              "file inclusion",
+              "path traversal",
+              "directory traversal"
+            ]
+          }
+        },
+        {
+          "key": "version",
+          "title": "Fingerprint the version",
+          "prompt": "Which Apache httpd version serves the site? (x.y.z)",
+          "check": {
+            "answer_regex": "^(apache\\s*)?(httpd\\s*)?2\\.4\\.50$"
+          }
+        },
+        {
+          "key": "cve",
+          "title": "Name the CVE",
+          "prompt": "Which CVE id covers the vulnerable Apache httpd version?",
+          "check": {
+            "answer": [
+              "cve-2021-42013"
+            ]
+          }
+        },
+        {
+          "key": "traversal",
+          "title": "Name the second weakness",
+          "prompt": "Which vulnerability class lets a request escape the intended directory?",
+          "check": {
+            "answer": [
+              "path traversal",
+              "directory traversal",
+              "lfi",
+              "local file inclusion"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
